@@ -20,14 +20,14 @@ const loginValidationSchema = yup.object({
 		.required('Password is required'),
 })
 
-export default function Login() {
+export default function Register() {
 	const { user, setUser } = useContext(UserContext)
 	const loginsend = (values) => {
 		const creds = {
 			username: values.name,
 			password: values.password,
 		}
-		fetch(`${API}/users/login`, {
+		fetch(`${API}/users/signup`, {
 			method: 'POST',
 			body: JSON.stringify(creds),
 			headers: {
@@ -85,7 +85,7 @@ export default function Login() {
 			/>
 
 			<Button type="submit" variant="contained">
-				Login
+				Register
 			</Button>
 		</form>
 	)

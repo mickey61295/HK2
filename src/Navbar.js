@@ -16,7 +16,7 @@ export default function Navbar() {
 	return (
 		<>
 			<AppBar position="sticky">
-				<StyledToolbar className='myNav'>
+				<StyledToolbar className="myNav">
 					<Button color="inherit" onClick={() => navigate('/movies')}>
 						Movies
 					</Button>
@@ -41,9 +41,14 @@ export default function Navbar() {
 								Logout
 							</Button>
 						) : (
-							<Button color="inherit" onClick={() => navigate('/login')}>
-								Login
-							</Button>
+							<>
+								<Button color="inherit" onClick={() => navigate('/login')}>
+									Login
+								</Button>
+								<Button color="inherit" onClick={() => navigate('/signup')}>
+									Register
+								</Button>
+							</>
 						)}
 					</div>
 				</StyledToolbar>

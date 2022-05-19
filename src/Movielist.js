@@ -34,7 +34,7 @@ export function Movielist({ props }) {
 	const [movieList, setMovieList] = useState([])
 
 	const getMovies = () => {
-		fetch(`${API}`)
+		fetch(`${API}/movies`)
 			.then((response) => response.json())
 			.then((data) => setMovieList(data))
 	}

@@ -17,6 +17,7 @@ import Paper from '@mui/material/Paper'
 import Navbar from './Navbar'
 import { UserContext } from './Contexts/UserContext'
 import Login from './Login'
+import Register from './Register'
 
 // const INITIAL_MOVIE_LIST = [
 //   {
@@ -141,6 +142,7 @@ export default function App() {
 						<Routes>
 							<Route path="/" element={<Home />} />
 							<Route path="/login" element={<Login />} />
+							<Route path="/signup" element={<Register />} />
 							<Route path="/movies" element={<Movielist />} />
 							<Route path="/movies/:id" element={<MovieDetails />} />
 							<Route path="/404" element={<NotFoundPage />} />

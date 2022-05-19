@@ -35,7 +35,7 @@ export function AddMovie() {
 	const createMovie = (values) => {
 		const newMovie = [values]
 		console.log(JSON.stringify(newMovie))
-		fetch(`${API}`, {
+		fetch(`${API}/admin/addmovie`, {
 			method: 'POST',
 			body: JSON.stringify(newMovie),
 			headers: {
