@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { UserContext } from './Contexts/UserContext'
 import { Button } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
@@ -6,6 +6,8 @@ import * as yup from 'yup'
 import { useFormik } from 'formik'
 import { API } from './global'
 import TextField from '@mui/material/TextField'
+import toastr from 'toastr'
+import 'toastr/build/toastr.min.css'
 
 const loginValidationSchema = yup.object({
 	email: yup
@@ -15,18 +17,33 @@ const loginValidationSchema = yup.object({
 	name: yup.string().required('Name is required'),
 	password: yup
 		.string()
-		.min(8, 'Password must be minimum 4 characters')
+		.min(8, 'Password must be minimum 8 characters')
 		.max(16, 'Password must be maximum 16 characters')
 		.required('Password is required'),
 })
 
-export default function Register() {
-	const { user, setUser } = useContext(UserContext)
+function popup({message}) {
+	toastr.options = {
+		positionClass: 'toast-top-full-width',
+		hideDuration: 500,
+		timeOut: 1000,
+	}
+	toastr.clear()
+	console.log(message)
+	message === 'User created successfully'
+		? setTimeout(() => toastr.success(message), 100)
+		: setTimeout(() => toastr.error(message), 100)
+}
+
+	export default function Register() {
+		const { user, setUser } = useContext(UserContext)
+	const [res, setRes] = useState(null)
 	const loginsend = (values) => {
 		const creds = {
 			username: values.name,
 			password: values.password,
 		}
+		console.log(creds)
 		fetch(`${API}/users/signup`, {
 			method: 'POST',
 			body: JSON.stringify(creds),
@@ -34,12 +51,19 @@ export default function Register() {
 				'Content-Type': 'application/json',
 			},
 		})
-			.then((data) => data.json())
-			.then((data) => {
-				setUser(data)
+			.then((response) => {
+				return response.json()
+			})
+			.then((responseData) => {
+				setRes(responseData)
+			})
+			.then(() => {
+				popup(res)
 			})
 			.then(() => formik.resetForm())
-			.then(() => navigate('/movies'))
+			.then(() =>
+				res.message === 'User created successfully' ? navigate('/login') : ''
+			)
 	}
 	const navigate = useNavigate()
 	const formik = useFormik({

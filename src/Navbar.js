@@ -36,7 +36,7 @@ export default function Navbar() {
 						''
 					)}
 					<div className="accountContainer">
-						{user ? (
+						{user && user.role ? (
 							<Button color="inherit" onClick={() => setUser(null)}>
 								Logout
 							</Button>

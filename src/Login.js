@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { UserContext } from './Contexts/UserContext'
 import { Button } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
@@ -6,11 +6,13 @@ import * as yup from 'yup'
 import { useFormik } from 'formik'
 import { API } from './global'
 import TextField from '@mui/material/TextField'
+import toastr from 'toastr'
+import 'toastr/build/toastr.min.css'
 
 const loginValidationSchema = yup.object({
 	email: yup
 		.string()
-		.min(4, 'Atleast 4 characters')
+		.min(4, 'Atleast 8 characters')
 		.matches(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,}$/i),
 	name: yup.string().required('Name is required'),
 	password: yup
@@ -19,6 +21,19 @@ const loginValidationSchema = yup.object({
 		.max(16, 'Password must be maximum 16 characters')
 		.required('Password is required'),
 })
+
+function popup(message) {
+	toastr.options = {
+		positionClass: 'toast-top-full-width',
+		hideDuration: 500,
+		timeOut: 1000,
+	}
+	toastr.clear()
+	console.log(message)
+	message === 'Login successful'
+		? setTimeout(() => toastr.success(message), 100)
+		: setTimeout(() => toastr.error(message), 100)
+}
 
 export default function Login() {
 	const { user, setUser } = useContext(UserContext)
@@ -38,8 +53,15 @@ export default function Login() {
 			.then((data) => {
 				setUser(data)
 			})
+			.then(() => {
+				user && popup(user.message)
+			})
 			.then(() => formik.resetForm())
-			.then(() => navigate('/movies'))
+			.then(() => {
+				user && user.message === 'Login successful'
+					? navigate('/movies')
+					: navigate('/login')
+			})
 	}
 	const navigate = useNavigate()
 	const formik = useFormik({
